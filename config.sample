@@ -1,0 +1,5 @@
+[kanboard]
+url = https://localhost/jsonrpc.php
+user = <user>
+api_token = <api-token>
+#ca_certificate = /etc/pki/tls/certs/ca-bundle.crt
