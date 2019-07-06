@@ -5,9 +5,30 @@ import configparser
 import json
 import os
 import sys
+from datetime import datetime
 
+from jinja2 import Environment
 from kanboard import Kanboard
 from kanboard.exceptions import KanboardClientException
+
+
+class Formatter:
+    def __init__(self, template, nullify_zero_date=True):
+        self._environment = Environment()
+        self._template = self._environment.from_string(template)
+        self.nullify_zero_date = nullify_zero_date
+
+    def format(self, task, optional_vars={}):
+        return self._template.render(self._convert_date(task))
+
+    def _convert_date(self, task):
+        for key in [k for k in task.keys() if k.startswith("date_")]:
+            if self.nullify_zero_date and task[key] == "0":
+                task[key] = None
+            if task[key] is not None:
+                task[key] = datetime.fromtimestamp(float(task[key]))
+        return task
+
 
 DEFAULT_CONFIG_FILE = os.path.join(os.getenv("HOME"),
                                    ".kanboard_task_search/config")
@@ -16,6 +37,12 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-c", "--config",
                     default=DEFAULT_CONFIG_FILE,
                     help="Specify the config file")
+parser.add_argument("-f", "--format",
+                    help="Format each task using the given Jinja2 template")
+parser.add_argument("--preserve-zero-date",
+                    action="store_true",
+                    default=False,
+                    help="Treat zeroes as Unix epoch when formatting date values")
 parser.add_argument("-p", "--projects",
                     help="Search tasks from specified projects (comma-separated)")
 parser.add_argument("query")
@@ -50,4 +77,11 @@ for id in project_ids:
     except KanboardClientException as ex:
         print("error: {}".format(str(ex)), file=sys.stderr)
         sys.exit(1)
-print(json.dumps(tasks))
+
+if args.format is not None:
+    formatter = Formatter(args.format,
+                          nullify_zero_date=not args.preserve_zero_date)
+    for task in tasks:
+        print(formatter.format(task))
+else:
+    print(json.dumps(tasks))
