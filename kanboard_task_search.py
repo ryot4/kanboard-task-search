@@ -13,11 +13,11 @@ DEFAULT_CONFIG_FILE = os.path.join(os.getenv("HOME"),
                                    ".kanboard_task_search/config")
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--config",
+parser.add_argument("-c", "--config",
                     default=DEFAULT_CONFIG_FILE,
-                    help="Kanboard API config")
-parser.add_argument("--projects",
-                    help="Comma separated list of project names")
+                    help="Specify the config file")
+parser.add_argument("-p", "--projects",
+                    help="Search tasks from specified projects (comma-separated)")
 parser.add_argument("query")
 args = parser.parse_args()
 
