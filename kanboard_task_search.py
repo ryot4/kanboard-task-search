@@ -31,7 +31,7 @@ class Formatter:
 
 
 DEFAULT_CONFIG_FILE = os.path.join(os.getenv("HOME"),
-                                   ".kanboard_task_search/config")
+                                   ".kanboard_task_search.conf")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-c", "--config",
