@@ -8,8 +8,7 @@ import sys
 from datetime import datetime
 
 from jinja2 import Environment
-from kanboard import Kanboard
-from kanboard.exceptions import KanboardClientException
+from kanboard import Client, ClientError
 
 
 class Formatter:
@@ -51,7 +50,7 @@ args = parser.parse_args()
 config = configparser.ConfigParser()
 config.read(args.config)
 
-kb = Kanboard(config["kanboard"]["url"],
+kb = Client(config["kanboard"]["url"],
               config["kanboard"]["user"],
               config["kanboard"]["api_token"],
               cafile=config["kanboard"]["ca_certificate"])
@@ -74,7 +73,7 @@ for id in project_ids:
     try:
         result = kb.search_tasks(project_id=id, query=args.query)
         tasks.extend(result)
-    except KanboardClientException as ex:
+    except ClientError as ex:
         print("error: {}".format(str(ex)), file=sys.stderr)
         sys.exit(1)
 

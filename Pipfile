@@ -4,7 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [packages]
-kanboard = "*"
+kanboard = ">=1.1.1"
 jinja2 = "*"
 
 [requires]
