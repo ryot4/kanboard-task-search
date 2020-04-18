@@ -50,6 +50,12 @@ args = parser.parse_args()
 config = configparser.ConfigParser()
 config.read(args.config)
 
+format = args.format
+
+if "default" in config:
+    if format is None and "format" in config["default"]:
+        format = config["default"]["format"]
+
 kb = Client(config["kanboard"]["url"],
               config["kanboard"]["user"],
               config["kanboard"]["api_token"],
@@ -77,9 +83,8 @@ for id in project_ids:
         print("error: {}".format(str(ex)), file=sys.stderr)
         sys.exit(1)
 
-if args.format is not None:
-    formatter = Formatter(args.format,
-                          nullify_zero_date=not args.preserve_zero_date)
+if format is not None:
+    formatter = Formatter(format, nullify_zero_date=not args.preserve_zero_date)
     for task in tasks:
         print(formatter.format(task))
 else:
