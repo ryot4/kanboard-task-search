@@ -44,6 +44,10 @@ parser.add_argument("--preserve-zero-date",
                     help="Treat zeroes as Unix epoch when formatting date values")
 parser.add_argument("-p", "--projects",
                     help="Search tasks from specified projects (comma-separated)")
+parser.add_argument("-u", "--unformatted",
+                    action="store_true",
+                    default=False,
+                    help="Disable formatting")
 parser.add_argument("query")
 args = parser.parse_args()
 
@@ -83,7 +87,7 @@ for id in project_ids:
         print("error: {}".format(str(ex)), file=sys.stderr)
         sys.exit(1)
 
-if format is not None:
+if format is not None and not args.unformatted:
     formatter = Formatter(format, preserve_zero_date=args.preserve_zero_date)
     for task in tasks:
         print(formatter.format(task))
