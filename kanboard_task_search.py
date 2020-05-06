@@ -12,17 +12,17 @@ from kanboard import Client, ClientError
 
 
 class Formatter:
-    def __init__(self, template, nullify_zero_date=True):
+    def __init__(self, template, preserve_zero_date=False):
         self._environment = Environment()
         self._template = self._environment.from_string(template)
-        self.nullify_zero_date = nullify_zero_date
+        self.preserve_zero_date = preserve_zero_date
 
     def format(self, task, optional_vars={}):
         return self._template.render(self._convert_date(task))
 
     def _convert_date(self, task):
         for key in [k for k in task.keys() if k.startswith("date_")]:
-            if self.nullify_zero_date and task[key] == "0":
+            if task[key] == "0" and not self.preserve_zero_date:
                 task[key] = None
             if task[key] is not None:
                 task[key] = datetime.fromtimestamp(float(task[key]))
@@ -84,7 +84,7 @@ for id in project_ids:
         sys.exit(1)
 
 if format is not None:
-    formatter = Formatter(format, nullify_zero_date=not args.preserve_zero_date)
+    formatter = Formatter(format, preserve_zero_date=args.preserve_zero_date)
     for task in tasks:
         print(formatter.format(task))
 else:
