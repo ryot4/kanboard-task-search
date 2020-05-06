@@ -1,4 +1,2 @@
--i https://pypi.org/simple
-jinja2==2.10.3
-kanboard==1.1.1
-markupsafe==1.1.1
+kanboard >= 1.1.1
+jinja2
