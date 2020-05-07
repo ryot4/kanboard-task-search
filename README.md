@@ -64,6 +64,7 @@ With `-f` option, you can format search results with Jinja2 template.
 
  - The template is applied to each task, and tasks are printed one per line
  - Keys in the API response can be used as variables in the template
+ - Date values (whose keys start with `date_*`) are converted to `datetime` objects
 
 The following example prints IDs and titles of open tasks assigned to you.
 
