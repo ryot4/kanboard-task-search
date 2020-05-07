@@ -35,13 +35,13 @@ You can use the same query language as in Kanboard Web interface.
 Search by keyword (`kanboard`):
 
 ```
-$ kanboard-task-search.py kanboard
+$ kanboard-task-search kanboard
 ```
 
 Search by task attributes:
 
 ```
-$ kanboard-task-search.py 'status:open due:<"next month"'
+$ kanboard-task-search 'status:open due:<"next month"'
 ```
 
 See [Advanced Search Syntax in Kanboard documentation](https://docs.kanboard.org/en/latest/user_guide/search.html) for the details.
@@ -53,7 +53,7 @@ By default, searching is done in all projects that you have access to.
 To limit search scope, specify the comma-separeted list of project names with `-p` option.
 
 ```
-$ kanboard-task-search.py -p Project1,Project2 status:open
+$ kanboard-task-search -p Project1,Project2 status:open
 ```
 
 ### Formatting search results
@@ -68,7 +68,7 @@ With `-f` option, you can format search results with Jinja2 template.
 The following example prints IDs and titles of open tasks assigned to you.
 
 ```
-$ kanboard-task-search.py -f '#{{ id }} {{ title }}' 'status:open assignee:me'
+$ kanboard-task-search -f '#{{ id }} {{ title }}' 'status:open assignee:me'
 ```
 
 The default format can be specified in the configuration. (You can disable it with `-u` option when necessary)
