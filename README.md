@@ -7,7 +7,7 @@ Search tasks in [Kanboard](https://kanboard.org/) from the command line.
 Install dependencies:
 
 ```
-$ pip install -r requirements.txt
+$ pip install -r requirements.lock
 ```
 
 Create the configuration file (`${HOME}/.kanboard_task_search.conf`):
